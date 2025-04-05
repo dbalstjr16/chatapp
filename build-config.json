@@ -1,0 +1,15 @@
+{
+  "appId": "com.chatapp.desktop",
+  "directories": {
+    "app": "dist-app",
+    "output": "release"
+  },
+  "files": [
+    "**/*"
+  ],
+  "forceCodeSigning": false,
+  "win": {
+    "target": "nsis",
+   "forceCodeSigning": false
+  }
+}

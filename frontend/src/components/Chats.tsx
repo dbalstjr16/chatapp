@@ -28,7 +28,7 @@ function Chats(props: any) {
     const bottomRef = useRef<HTMLDivElement>(null);
 
     // ------ Fetch Messages from History Log ------
-    const { loading, error, data } = useQuery(GET_OLDMESSAGES_QUERY);
+    const { data } = useQuery(GET_OLDMESSAGES_QUERY);
 
     useEffect(() => {
         socket.on('chat message', (msg) => {

@@ -1,9 +1,7 @@
 
-import { Container, Card, ListGroup, Form, Button } from "react-bootstrap";
-import { useState, useEffect, useRef } from "react";
+import { Container, Card, Form, Button } from "react-bootstrap";
+import { useState, useRef } from "react";
 import Chats from "./components/Chats";
-import Chatrooms from "./components/Chatrooms";
-import { Navigate } from "react-router-dom";
 
 function App() {
   const [user, setUser] = useState<string | null>("");

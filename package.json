@@ -6,10 +6,14 @@
     "backend": "npm run dev --prefix backend",
     "electron": "electron electron/electron-main.js",
     "electron-delay": "cmd /C \"timeout /T 3 & npm run electron\"",
-    "start": "concurrently --names \"FRONTEND,BACKEND,ELECTRON\" --prefix-colors \"cyan,blue,magenta\" \"npm run frontend\" \"npm run backend\" \"npm run electron-delay\""
+    "start": "concurrently --names \"FRONTEND,BACKEND,ELECTRON\" --prefix-colors \"cyan,blue,magenta\" \"npm run frontend\" \"npm run backend\" \"npm run electron-delay\"",
+    "package:dir": "electron-builder --dir --config build-config.json",
+    "package:win": "electron-builder --win --config build-config.json",
+    "copy-frontend": "rm -rf dist-app/frontend && mkdir dist-app/frontend && cp -r frontend/dist/* dist-app/frontend/"
   },
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "concurrently": "^9.1.2",
+    "electron-builder": "^26.0.12"
   },
   "dependencies": {
     "electron": "^35.1.4"

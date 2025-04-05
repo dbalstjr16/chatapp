@@ -3,5 +3,12 @@
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ]
+  ],
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2020",
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "moduleResolution": "node"
+  }
 }

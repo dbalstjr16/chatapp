@@ -1,0 +1,17 @@
+{
+  "name": "chat-app",
+  "private": true,
+  "scripts": {
+    "frontend": "npm run dev --prefix frontend",
+    "backend": "npm run dev --prefix backend",
+    "electron": "electron electron/electron-main.js",
+    "electron-delay": "cmd /C \"timeout /T 3 & npm run electron\"",
+    "start": "concurrently --names \"FRONTEND,BACKEND,ELECTRON\" --prefix-colors \"cyan,blue,magenta\" \"npm run frontend\" \"npm run backend\" \"npm run electron-delay\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "dependencies": {
+    "electron": "^35.1.4"
+  }
+}

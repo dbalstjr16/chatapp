@@ -10,10 +10,7 @@ function createWindow() {
     }
   });
 
-  // Load the Vite dev server in dev mode
   win.loadURL('http://localhost:5173');
-
-  // OR for production:
   // win.loadFile('dist/index.html');
 }
 

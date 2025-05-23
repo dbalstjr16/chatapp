@@ -25,9 +25,13 @@ io.on('connection', (socket) => {
     socket.on('chat message', async (msg) => {
         io.emit('chat message', msg);
 
-        await pool.query(`INSERT INTO chats (username, text) 
-            VALUES ($1, $2)
-            `, [msg.username, msg.text]);
+        await pool.query(`INSERT INTO chats (username, text, chatroom_id) 
+            VALUES ($1, $2, $3)
+            `, [msg.username, msg.text, msg.chatroomId]);
+    });
+
+    socket.on('joinRoom', (chatroomId) => {
+        socket.join(`chatroom-${chatroomId}`);
     });
 
     socket.on('disconnect', () => {
@@ -37,8 +41,11 @@ io.on('connection', (socket) => {
 
 // ----- GraphQL Setup -----
 const typeDefs = gql`
+    scalar Int
+    
     type Query {
-        messages: [userMessage!]!
+        messages(chatroomId: Int!): [userMessage!]!
+        chatrooms: [Chatroom!]!
     }
 
     type Chat {
@@ -51,16 +58,37 @@ const typeDefs = gql`
     type userMessage {
         username: String!
         text: String!
+        chatroomId: Int!
+    }
+
+    type Chatroom {
+        id: ID!
+        name: String!
+        description: String
+        isPrivate: Boolean
     }
 `;
 
 const resolvers = {
     Query : {
-        messages: async () => {
-            const result = await pool.query(`SELECT username, text FROM chats
-                ORDER BY created_at ASC`); 
+        messages: async (_, { chatroomId }) => {
+            const result = await pool.query(`
+                SELECT username, text, chatroom_id as "chatroomId" 
+                FROM chats
+                WHERE chatroom_id = $1
+                ORDER BY created_at ASC
+                `, [chatroomId]); 
             return result.rows;
         },
+
+        chatrooms: async () => {
+            const result = await pool.query(`
+                SELECT id, name, is_private
+                FROM chatrooms
+                ORDER BY created_at ASC
+                `);
+            return result.rows;
+        }
     },
 };
 

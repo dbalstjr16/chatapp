@@ -15,7 +15,7 @@ function Router() {
                 <Routes>
                     <Route path="/" element={<App />}></Route>
                     <Route path="/chatrooms" element={<Chatrooms />}></Route>
-                    <Route path="/chats" element={<Chats />}></Route>
+                    <Route path="/chats/:chatroomId" element={<Chats />}></Route>
                 </Routes>
             </BrowserRouter>
         </userContext.Provider>

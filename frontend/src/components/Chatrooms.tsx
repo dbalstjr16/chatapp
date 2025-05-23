@@ -1,8 +1,31 @@
 import { Container, Card, ListGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { gql, useQuery } from '@apollo/client';
+
+const GET_CHATROOMS_QUERY = gql`
+    query GetChatrooms {
+        chatrooms {
+            id
+            name
+            isPrivate
+        }
+    }
+`;
+
+interface Chatroom {
+    id: string,
+    name: string,
+    description: string | null,
+    created_at: string,
+    isPrivate: boolean,
+}
 
 function Chatrooms() {
     const navigate = useNavigate();
+
+    const { loading, error, data } = useQuery(GET_CHATROOMS_QUERY);
+    if (loading) return <p>Loading chatrooms...</p>;
+    if (error) return <p>Error loading chatrooms</p>;
 
     return <Container className="d-flex justify-content-center align-items-center min-vh-100 bg-light">
             <Card className="shadow d-flex d-column" style={{ width: '100%', maxWidth: "500px", height: "80vh"}}>
@@ -14,8 +37,17 @@ function Chatrooms() {
                 </Card.Header>
                 <Card.Body>
                     <ListGroup>
-                        <ListGroup.Item >Chatroom 1</ListGroup.Item>
-                        <ListGroup.Item action onClick={() => navigate('/chats')}>Chatroom 2</ListGroup.Item>
+                        {
+                            data.chatrooms.map((chatroom: Chatroom) => {
+                                return <ListGroup.Item action 
+                                        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}
+                                        onClick={() => navigate(`/chats/${chatroom.id}`)}>
+                                        <span>{chatroom.name}</span>
+                                        <span style={{ fontSize: '0.9rem', color: '#888'}}>{chatroom.isPrivate ? 'private' : 'public'}</span>
+                                    </ListGroup.Item>
+                            })
+                        }
+                        
                     </ListGroup>
                 </Card.Body>
             </Card>

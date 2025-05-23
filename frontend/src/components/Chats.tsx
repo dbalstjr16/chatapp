@@ -1,7 +1,9 @@
 import { Container, Card, ListGroup, Form, Button } from "react-bootstrap";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { io } from "socket.io-client";
+import { useNavigate } from "react-router-dom";
+import userContext from "../context/userContext";
 
 const socket = io(`http://localhost:3001`);
 
@@ -19,13 +21,18 @@ const GET_OLDMESSAGES_QUERY = gql`
   }
 `;
 
-function Chats(props: any) {
+function Chats() {
 
-    const { user } = props;
+    const context = useContext(userContext);
+    if (!context) throw new Error("");
+    const [user, ] = context;
+
     const [chat, setChat] = useState<Chat[]>([]);
 
     const messageInput = useRef<HTMLInputElement>(null);
     const bottomRef = useRef<HTMLDivElement>(null);
+
+    const navigate = useNavigate();
 
     // ------ Fetch Messages from History Log ------
     const { loading, error, data } = useQuery(GET_OLDMESSAGES_QUERY);
@@ -63,6 +70,15 @@ function Chats(props: any) {
     return <Container className="d-flex justify-content-center align-items-center min-vh-100 bg-light">
         <Card className="shadow d-flex flex-column" style={{ width: '100%', maxWidth: '500px', height: '80vh' }}>
             <Card.Header className="bg-primary text-white text-center">
+                <Button
+                variant="light"
+                size="sm"
+                className="position-absolute top-0 start-0 ms-2"
+                style={{ marginTop: '0.375rem' }} // 1.5 x 0.25rem (default Bootstrap unit)
+                onClick={() => navigate('/chatrooms')}
+                >
+                <i className="bi bi-arrow-left"></i>
+                </Button>
                 <h5 className="mb-0">Welcome, {user}</h5>
             </Card.Header>
 

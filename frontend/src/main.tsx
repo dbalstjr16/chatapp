@@ -2,9 +2,10 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import App from './App';
-
+import Router from './Router';
+ 
 const client = new ApolloClient({
   uri: 'http://localhost:3001/graphql',
   cache: new InMemoryCache(),
@@ -13,7 +14,7 @@ const client = new ApolloClient({
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
       <ApolloProvider client={client}>
-        <App />
+        <Router />
       </ApolloProvider>
   </StrictMode>,
 )
